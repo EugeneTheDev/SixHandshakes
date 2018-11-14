@@ -1,5 +1,6 @@
 package com.eugene.sixhandshakes.controllers;
 
+import com.eugene.sixhandshakes.controllers.responses.SuccessResponse;
 import com.eugene.sixhandshakes.model.DeepCount;
 import com.eugene.sixhandshakes.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +19,9 @@ public class Controller {
     }
 
     @PostMapping("/users")
-    public String postUsers(@RequestBody HashMap<String, User> users){
-        deepCount.addUsers(users.get("source"), users.get("target"));
-        return  String.format("%s <-> %s", users.get("source").getFirstName(), users.get("target").getFirstName());
+    public SuccessResponse postUsers(@RequestBody HashMap<String, User> users){
+        User source = users.get("source"), target = users.get("target");
+        deepCount.addUsers(source, target);
+        return new SuccessResponse(source.getId(), target.getId());
     }
 }
