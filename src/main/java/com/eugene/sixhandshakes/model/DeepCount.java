@@ -1,5 +1,7 @@
 package com.eugene.sixhandshakes.model;
 
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
 import com.vk.api.sdk.client.VkApiClient;
 import com.vk.api.sdk.client.actors.UserActor;
 import com.vk.api.sdk.exceptions.ApiException;
@@ -9,21 +11,18 @@ import com.vk.api.sdk.httpclient.HttpTransportClient;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@Component()
+@Component
 public class DeepCount {
 
     private VkApiClient vk;
     private UserActor owner;
     private AtomicInteger countOfInteractions;
-    private ExecutorService service;
+    private Db db;
 
     public DeepCount() {
         initApp();
@@ -42,10 +41,22 @@ public class DeepCount {
         owner=new UserActor(Integer.valueOf(properties.getProperty("owner-id")),
                 properties.getProperty("owner-access-token"));
 
-        countOfInteractions = new AtomicInteger(0);
-        service = Executors.newFixedThreadPool(3);
-        startCheckThread();
+        initDb(properties);
 
+        countOfInteractions = new AtomicInteger(0);
+        startCheckThread();
+        startChecking();
+
+    }
+
+    private void initDb(Properties properties){
+        MongoClientURI uri  = new MongoClientURI(String
+                .format("mongodb://%s:%s@%s:%s/%s",properties.getProperty("db-user"),
+                        properties.getProperty("db-password"), properties.getProperty("db-host"),
+                        properties.getProperty("db-port"), properties.getProperty("db-name")));
+        MongoClient client = new MongoClient(uri);
+        db = new Db(client.getDatabase(uri.getDatabase()).getCollection(properties.getProperty("db-users")),
+                client.getDatabase(uri.getDatabase()).getCollection(properties.getProperty("db-results")));
     }
 
     private void startCheckThread(){
@@ -111,9 +122,6 @@ public class DeepCount {
                 }
 
             } catch (ApiTooManyException e){
-
-
-
                 isRepeat = true;
 
             } catch (ApiException | ClientException e) {
@@ -124,51 +132,65 @@ public class DeepCount {
         return -1;
     }
 
-    public void findTargetAndCount(User source, User target){
-        service.submit(()->{
-            LinkedList<Long> users = new LinkedList<>();
-            int result = -1;
-            int sourceId = source.getId(), targetId = target.getId();
-            try {
-                List<Integer> buffer;
-                int i=0;
-                do {
+    private void startChecking(){
+        new Thread(()->{
 
-                    check();
-                    buffer = vk.friends()
-                            .get(owner)
-                            .count(4000)
-                            .offset(i)
-                            .userId(sourceId)
-                            .execute()
-                            .getItems();
-                    i+=4000;
+            while (Thread.currentThread().isAlive()) {
+                HashMap<String, User> pair = db.nextUsers();
+                if (pair.isEmpty()) return;
+                User source = pair.get("source"), target = pair.get("target");
 
-                    for (Integer user: buffer) if (user.equals(targetId)){
-                        result = 1;
-                        break;
+                LinkedList<Long> users = new LinkedList<>();
+                int result = -1;
+                int sourceId = source.getId(), targetId = target.getId();
+                try {
+                    List<Integer> buffer;
+                    int i = 0;
+                    do {
+
+                        check();
+                        buffer = vk.friends()
+                                .get(owner)
+                                .count(4000)
+                                .offset(i)
+                                .userId(sourceId)
+                                .execute()
+                                .getItems();
+                        i += 4000;
+
+                        for (Integer user : buffer)
+                            if (user.equals(targetId)) {
+                                result = 1;
+                                break;
+                            }
+
+                    } while (!buffer.isEmpty());
+
+                } catch (ApiException | ClientException ignore) {
+                    System.out.println("Account is private");
+                }
+
+                users.offer(Long.valueOf(Integer.toString(sourceId) + 0));
+                while (result <= 0) {
+
+                    result = findTargetAndCount(users, targetId);
+
+                    try {
+                        Thread.sleep(300);
+                    } catch (InterruptedException ignore) {
                     }
 
-                } while(!buffer.isEmpty());
+                }
 
-            } catch (ApiException | ClientException ignore) {
-                System.out.println("Account is private");
-            }
-
-            users.offer(Long.valueOf(Integer.toString(sourceId) + 0));
-            while (result<=0){
-
-                result = findTargetAndCount(users, targetId);
-
-                try {
-                    Thread.sleep(300);
-                } catch (InterruptedException ignore) {}
+                db.writeResult(source, target, result);
 
             }
+        }).start();
 
-            System.out.printf("%s <-%d-> %s", source.getFirstName(), result, target.getFirstName());
-        });
+    }
 
+    public void addUsers(User source, User target){
+       db.addUsers(source, target);
     }
 
 }

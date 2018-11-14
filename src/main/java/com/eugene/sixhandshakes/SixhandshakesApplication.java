@@ -8,6 +8,5 @@ public class SixhandshakesApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(SixhandshakesApplication.class, args);
-
     }
 }

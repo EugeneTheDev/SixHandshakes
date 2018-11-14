@@ -17,9 +17,9 @@ public class Controller {
         this.deepCount = deepCount;
     }
 
-    @PostMapping
+    @PostMapping("/users")
     public String postUsers(@RequestBody HashMap<String, User> users){
-        deepCount.findTargetAndCount(users.get("source"), users.get("target"));
+        deepCount.addUsers(users.get("source"), users.get("target"));
         return  String.format("%s <-> %s", users.get("source").getFirstName(), users.get("target").getFirstName());
     }
 }
