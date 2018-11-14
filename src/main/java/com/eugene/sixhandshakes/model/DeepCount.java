@@ -134,10 +134,9 @@ public class DeepCount {
 
     private void startChecking(){
         new Thread(()->{
-
             while (Thread.currentThread().isAlive()) {
                 HashMap<String, User> pair = db.nextUsers();
-                if (pair.isEmpty()) return;
+                if (pair.isEmpty()) continue;
                 User source = pair.get("source"), target = pair.get("target");
 
                 LinkedList<Long> users = new LinkedList<>();
