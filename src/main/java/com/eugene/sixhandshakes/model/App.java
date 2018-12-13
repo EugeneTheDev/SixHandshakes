@@ -188,8 +188,8 @@ public class App {
 
     }
 
-    public void addUsers(User source, User target){
-       db.addUsers(source, target);
+    public void insertUsers(User source, User target){
+       db.insertUsers(source, target);
     }
 
     public Document result(int firstId, int secondId){

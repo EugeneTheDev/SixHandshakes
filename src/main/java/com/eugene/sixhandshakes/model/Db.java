@@ -23,7 +23,7 @@ public class Db {
         mapper = new ObjectMapper();
     }
 
-    public void addUsers(User source, User target){
+    public void insertUsers(User source, User target){
         try {
             users.insertOne(
                     new Document(

@@ -1,5 +1,7 @@
 package com.eugene.sixhandshakes.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class User {
 
     private String firstName, lastName;
@@ -29,6 +31,7 @@ public class User {
         this.id = id;
     }
 
+    @JsonIgnore
     public boolean isEmpty(){
         return firstName.isEmpty() || lastName.isEmpty() || id<=0;
     }

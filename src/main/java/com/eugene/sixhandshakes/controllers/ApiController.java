@@ -28,7 +28,7 @@ public class ApiController {
     public SuccessResponse postUsers(@RequestBody HashMap<String, User> users){
         User source = users.get("source"), target = users.get("target");
         if (source.isEmpty() || target.isEmpty()) throw new HttpMessageNotReadableException("Missing arguments");
-        app.addUsers(source, target);
+        app.insertUsers(source, target);
         return new SuccessResponse(source.getId(), target.getId());
     }
 
