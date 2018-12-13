@@ -1,5 +1,6 @@
 package com.eugene.sixhandshakes.model;
 
+import com.eugene.sixhandshakes.model.entities.User;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.vk.api.sdk.client.VkApiClient;
@@ -8,23 +9,22 @@ import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ApiTooManyException;
 import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.httpclient.HttpTransportClient;
+import org.bson.Document;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
-public class DeepCount {
+public class App {
 
     private VkApiClient vk;
     private UserActor owner;
     private AtomicInteger countOfInteractions;
     private Db db;
 
-    public DeepCount() {
+    public App() {
         initApp();
     }
 
@@ -32,7 +32,7 @@ public class DeepCount {
 
         Properties properties = new Properties();
         try {
-            properties.load(DeepCount.class.getClassLoader().getResourceAsStream("static/config.properties"));
+            properties.load(App.class.getClassLoader().getResourceAsStream("static/config.properties"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -190,6 +190,10 @@ public class DeepCount {
 
     public void addUsers(User source, User target){
        db.addUsers(source, target);
+    }
+
+    public Document result(int firstId, int secondId){
+        return db.result(firstId, secondId);
     }
 
 }

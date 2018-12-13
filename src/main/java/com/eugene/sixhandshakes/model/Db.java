@@ -1,5 +1,6 @@
 package com.eugene.sixhandshakes.model;
 
+import com.eugene.sixhandshakes.model.entities.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.client.MongoCollection;
@@ -7,6 +8,7 @@ import org.bson.Document;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 
 import static com.mongodb.client.model.Filters.*;
 
@@ -70,5 +72,28 @@ public class Db {
         } catch (JsonProcessingException e) {
             System.out.println("Unable to insert");
         }
+    }
+
+    public Document result(int firstId, int secondId){
+        Document result = results.find(
+                or(
+                        and(
+                                eq("source.id", firstId),
+                                eq("target.id", secondId)
+                        ),
+
+                        and(
+                                eq("source.id", secondId),
+                                eq("target.id", firstId)
+                        )
+                )
+        ).first();
+
+        if (result != null){
+            result.remove("_id");
+            return result;
+        }
+
+        return new Document();
     }
 }

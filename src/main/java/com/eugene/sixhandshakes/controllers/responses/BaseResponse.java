@@ -1,6 +1,6 @@
 package com.eugene.sixhandshakes.controllers.responses;
 
-public class BaseResponse {
+public abstract class BaseResponse {
 
     private boolean isSuccess;
 

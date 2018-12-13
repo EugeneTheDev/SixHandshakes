@@ -5,7 +5,6 @@ public class ErrorResponse extends BaseResponse {
     private int errorCode;
     private String message;
 
-
     public ErrorResponse(String message, int errorCode) {
         super(false);
         this.message = message;

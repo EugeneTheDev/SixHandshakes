@@ -1,18 +1,9 @@
-package com.eugene.sixhandshakes.model;
+package com.eugene.sixhandshakes.model.entities;
 
 public class User {
 
     private String firstName, lastName;
     private int id;
-
-    public User() {
-    }
-
-    public User(String firstName, String lastName, int id) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.id = id;
-    }
 
     public String getFirstName() {
         return firstName;
@@ -36,5 +27,9 @@ public class User {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public boolean isEmpty(){
+        return firstName.isEmpty() || lastName.isEmpty() || id<=0;
     }
 }
