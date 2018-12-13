@@ -8,7 +8,6 @@ import org.bson.Document;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Map;
 
 import static com.mongodb.client.model.Filters.*;
 
