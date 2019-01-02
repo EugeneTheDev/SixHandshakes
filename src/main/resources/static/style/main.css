@@ -21,21 +21,26 @@ header{
     display: flex;
     top: 0px;
     justify-content: center; 
+    align-items: center;
 }
 
 header .special-first{
     color:rgb(231, 229, 78);
     display: inline-block;
+    margin:0px;
+
 }
 
 header .special-second{
+    margin:0px;
     color: rgb(231, 170, 78);
     display: inline-block;
     padding-left: 10px;
 }
 
 header p{
-    font-size: 35px;
+    letter-spacing: 5px;
+    font-size: 50px;
     font-family: 'Staatliches', cursive;
     text-shadow: 1px 1px 1px rgba(0,0,0,1);
 }
@@ -46,15 +51,16 @@ main{
     position: relative;
 }
 
-.about-activity-block, .user-information-block{
+.about-activity-block, .user-information-block, .relation-block{
     font-family: 'Montserrat', sans-serif;
     color: rgb(73, 73, 73);
 }
 
-.about-activity-block h1, .user-information-block h1{
+.about-activity-block h1, .user-information-block h1, .relation-block h1{
     font-size: 25px;
     font-weight: 600;
 }
+
 
 
 .about-activity-block p{
@@ -81,34 +87,183 @@ main{
     margin-top: 30px;
 }
 
-input{
+.user-information-block input{
     width: 100%;
-    height: 20px;
+    height: 30px;
     margin-top: 5px;
     border-top:none;
     border-right:none;
-    border-left: 1px solid rgb(37, 37, 36);
-    border-bottom: 1px solid rgb(37, 37, 36);
+    border-left: 2px solid;
+    border-bottom: 2px solid;
+    border-color:  rgb(39, 38, 38);
+    background: rgb(240, 239, 237);
+    padding-left: 5px;
+    -webkit-box-shadow: 0px 0px 7px 0px rgba(50, 50, 50, 0.5);
+    -moz-box-shadow:    0px 0px 7px 0px rgba(50, 50, 50, 0.5);
+    box-shadow:         0px 0px 7px 0px rgba(50, 50, 50, 0.5);
+    font-family: 'Montserrat', sans-serif;
+    color: rgb(53, 53, 53);
 
 }
 
 input::placeholder{
-    padding-left:10px;
     letter-spacing: 1.5px;
     font-style: italic;
+    color: rgb(121, 120, 119);
+
+}
+
+input:active, input:focus {
+    outline: none;
+  }
+input{
+border: 0 solid ;
+height: 100px;
 }
 
 #friend-form-row{
     margin-top:15px;
 }
 
-
-.container{
-    padding: 10px 10px 20px 10px;
-    height: 1000px;
-    width: 80%;
-    background: rgb(238, 237, 234);
-    border-radius: 3px;
-    box-shadow: 0 0 10px rgb(25, 25, 26);
+.mobile{
+    display: none;
 }
 
+#digest-button{
+    outline: none;
+    transition: 0.3s;
+    background: none;
+    border: 2px solid rgb(73, 73, 73);
+    border-radius: 5px;
+    -webkit-box-shadow: 0px 0px 3px 0px rgb(50, 50, 50);
+    -moz-box-shadow:    0px 0px 3px 0px rgb(50, 50, 50);
+    box-shadow:         0px 0px 3px 0px rgb(50, 50, 50);
+}
+
+#digest-button:hover, .relation-connection:hover{
+    color: black;
+    background: rgb(198, 197, 194);
+}
+
+#digest-button:active{
+    color: black;
+    box-shadow: none;
+}
+
+.button-row{
+    margin-top: 15px;
+}
+
+.relation-block{
+    margin-top: 20px;
+}
+
+.relation-connection{
+    border: 2px solid black;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    -webkit-box-shadow: 0px 0px 5px 0px rgb(50, 50, 50);
+    -moz-box-shadow:    0px 0px 5px 0px rgb(50, 50, 50);
+    box-shadow:         0px 0px 5px 0px rgb(50, 50, 50);
+
+}
+
+.handshake-view{
+    display: flex;
+    justify-content: center;
+}
+
+.relation-block-row{
+    margin-top: 10px;
+}
+.handshake-view p{
+    margin: 0px;
+    font-family: 'Staatliches', cursive;
+    color: black;
+    font-size: 35px;
+    padding-right: 12px;
+}
+
+.shaking-img{
+    height: 40px;
+    width: 40px;
+    background: url("../images/handshake.png");
+    background-size: cover;
+}
+
+.container{
+    overflow: hidden;
+    padding: 10px 10px 20px 10px;
+    width: 80%;
+    background: rgb(228, 227, 224);
+    border-radius: 3px;
+    -webkit-box-shadow: 0px 0px 22px 0px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow:    0px 0px 22px 0px rgba(50, 50, 50, 0.75);
+    box-shadow:         0px 0px 22px 0px rgba(50, 50, 50, 0.75);
+    margin-bottom: 50px;
+}
+
+@media all and (max-width:720px){
+    div .mobile{
+        display: block;
+        text-align: center;
+    }
+    div .mobile p,  .relation-connection p{
+        font-size: 125%;
+    }
+
+    div .mobile h1, div .relation-block h1{
+        font-size: 2.5em;
+    }
+
+    .mobile hr{
+        border: 1px solid rgb(73, 73, 73);
+    }
+
+    main .container{
+        height: auto;
+        overflow: hidden;
+        width: 100%;
+        margin:0;
+        padding-left: 0px;
+
+    }
+    div .screen{
+        display: none;
+    }
+
+    main{
+        top: 100px;
+    }
+
+    header p{
+        letter-spacing: 5px;
+        font-size: 40px;
+        font-family: 'Staatliches', cursive;
+        text-shadow: 1px 1px 1px rgba(0,0,0,1);
+    }
+     
+    .relation-block .relation-connection{
+        border: 0px;
+        border-radius: 0;
+        border-top: 2px solid black;    
+        /* border-bottom: 2px solid black;     */
+        flex-direction: column;
+        font-size: 15px;
+        box-shadow: none;
+    }
+    div .handshake-view p{
+        font-size: 35px;
+        padding-right: 12px;
+    }
+    
+    .shaking-img{
+        height: 40px;
+        width: 40px;
+        background: url("../images/handshake.png");
+        background-size: cover;
+    }
+
+} 
