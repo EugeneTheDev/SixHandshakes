@@ -7,7 +7,9 @@ import com.mongodb.client.MongoCollection;
 import org.bson.Document;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import static com.mongodb.client.model.Filters.*;
 
@@ -25,6 +27,36 @@ public class Db {
 
     public void insertUsers(User source, User target){
         try {
+            Document doc = users.find(
+                    or(
+                            and(
+                                    eq("source.id", source.getId()),
+                                    eq("target.id", target.getId())
+                            ),
+                            and(
+                                    eq("source.id", target.getId()),
+                                    eq("target.id", source.getId())
+                            )
+                    )
+            ).first();
+
+            if (doc != null) return;
+
+            doc = results.find(
+                    or(
+                            and(
+                                    eq("source.id", source.getId()),
+                                    eq("target.id", target.getId())
+                            ),
+                            and(
+                                    eq("source.id", target.getId()),
+                                    eq("target.id", source.getId())
+                            )
+                    )
+            ).first();
+
+            if (doc != null) return;
+
             users.insertOne(
                     new Document(
                             "source", Document.parse(mapper.writeValueAsString(source))
@@ -73,26 +105,19 @@ public class Db {
         }
     }
 
-    public Document result(int firstId, int secondId){
-        Document result = results.find(
+    public List<Document> result(int userId){
+        List<Document> result = results.find(
                 or(
-                        and(
-                                eq("source.id", firstId),
-                                eq("target.id", secondId)
-                        ),
-
-                        and(
-                                eq("source.id", secondId),
-                                eq("target.id", firstId)
-                        )
+                        eq("source.id", userId),
+                        eq("target.id", userId)
                 )
-        ).first();
+        ).into(new ArrayList<>());
 
-        if (result != null){
-            result.remove("_id");
+        if (result != null && !result.isEmpty()){
+            result.forEach(e -> e.remove("_id"));
             return result;
         }
 
-        return new Document();
+        return new ArrayList<>();
     }
 }

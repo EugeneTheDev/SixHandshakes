@@ -2,13 +2,10 @@ package com.eugene.sixhandshakes.controllers;
 
 import com.eugene.sixhandshakes.controllers.responses.BaseResponse;
 import com.eugene.sixhandshakes.controllers.responses.ErrorResponse;
-import com.eugene.sixhandshakes.controllers.responses.ResultResponse;
-import com.eugene.sixhandshakes.controllers.responses.SuccessResponse;
 import com.eugene.sixhandshakes.model.App;
-import com.eugene.sixhandshakes.model.entities.User;
-import org.bson.Document;
+import com.vk.api.sdk.exceptions.ApiException;
+import com.vk.api.sdk.exceptions.ClientException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -25,21 +22,22 @@ public class ApiController {
     }
 
     @PostMapping("/users/insert")
-    public SuccessResponse postUsers(@RequestBody HashMap<String, User> users){
-        User source = users.get("source"), target = users.get("target");
-        if (source.isEmpty() || target.isEmpty()) throw new HttpMessageNotReadableException("Missing arguments");
-        app.insertUsers(source, target);
-        return new SuccessResponse(source.getId(), target.getId());
+    public BaseResponse postUsers(@RequestBody HashMap<String, String> users){
+        String source = users.get("source"), target = users.get("target");
+        try {
+            return app.insertUsers(source, target);
+        } catch (ClientException | ApiException e) {
+            return new ErrorResponse(e.getMessage());
+        }
     }
 
     @GetMapping("/users/result")
-    public BaseResponse getResult(@RequestParam(value = "first_id") int firstId,
-                                  @RequestParam(value = "second_id") int secondId){
-
-        Document result = app.result(firstId, secondId);
-
-        return !result.isEmpty() ? new ResultResponse(result) :
-                new ErrorResponse("Could not find requested pair", 405);
+    public BaseResponse getResult(@RequestParam(value = "user_id") String userId){
+        try{
+            return app.result(userId);
+        } catch (IllegalArgumentException | ClientException | ApiException e){
+            return new ErrorResponse(e.getMessage());
+        }
 
     }
 }

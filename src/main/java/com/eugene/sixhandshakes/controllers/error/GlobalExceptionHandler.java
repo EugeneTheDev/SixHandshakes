@@ -19,31 +19,27 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException ex,
                                                                          HttpHeaders headers, HttpStatus status, WebRequest request) {
-        return new ResponseEntity<>(new ErrorResponse("This method does not supported",
-                status.value()), status);
+        return new ResponseEntity<>(new ErrorResponse("This method does not supported"), status);
     }
 
     @Override
     protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers,
                                                                    HttpStatus status, WebRequest request) {
-        return new ResponseEntity<>(new ErrorResponse("This URL was not found on this server",
-                status.value()), status);
+        return new ResponseEntity<>(new ErrorResponse("This URL was not found on this server"), status);
     }
 
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        return new ResponseEntity<>(new ErrorResponse("Illegal request body", status.value()), status);
+        return new ResponseEntity<>(new ErrorResponse("Illegal request body"), status);
     }
 
     @Override
     protected ResponseEntity<Object> handleTypeMismatch(TypeMismatchException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        return new ResponseEntity<>(new ErrorResponse("Wrong type of the argument (must be integer)",
-                status.value()), status);
+        return new ResponseEntity<>(new ErrorResponse("Wrong type of the argument (must be integer)"), status);
     }
 
     @Override
     protected ResponseEntity<Object> handleMissingServletRequestParameter(MissingServletRequestParameterException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        return new ResponseEntity<>(new ErrorResponse("Missed one or more arguments",
-                status.value()), status);
+        return new ResponseEntity<>(new ErrorResponse("Missed one or more arguments"), status);
     }
 }
