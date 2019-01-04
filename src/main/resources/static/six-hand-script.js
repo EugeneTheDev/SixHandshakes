@@ -19,7 +19,7 @@ $("document").ready(function(){
             $(".notification").fadeOut({duration:500});
             $.ajax({
                 url: "http://sheltered-sands-71110.herokuapp.com/get_json",
-                method: "POST",
+                method: "GET",
                 data:{
                     url: $("input")[4].value.slice(15)
                 },
@@ -46,7 +46,7 @@ $("document").ready(function(){
             $(".notification").fadeOut({duration:500});
             $.ajax({
                 url: "http://sheltered-sands-71110.herokuapp.com/get_json",
-                method: "POST",
+                method: "GET",
                 data:{
                     url1: $(".first-input")[1].value.slice(15),
                     url2: $(".second-input")[1].value.slice(15)
@@ -72,7 +72,7 @@ $("document").ready(function(){
             $(".notification").fadeOut({duration:500});
             $.ajax({
                 url: "http://sheltered-sands-71110.herokuapp.com/get_json",
-                method: "POST",
+                method: "GET",
                 data:{
                     url1: $(".first-input")[0].value.slice(15),
                     url2: $(".second-input")[0].value.slice(15)
@@ -102,7 +102,7 @@ $("document").ready(function(){
     function updateRightNowInformation(){
         $.ajax({
                 url: "http://sheltered-sands-71110.herokuapp.com/get_update",
-                method: "POST",
+                method: "GET",
                 data:{
                     type: "get_update",
                 },
