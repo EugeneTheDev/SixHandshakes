@@ -1,6 +1,9 @@
 package com.eugene.sixhandshakes.model;
 
+import com.eugene.sixhandshakes.controllers.responses.ResultResponse;
+import com.eugene.sixhandshakes.controllers.responses.SuccessResponse;
 import com.eugene.sixhandshakes.model.entities.User;
+import com.google.gson.JsonElement;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.vk.api.sdk.client.VkApiClient;
@@ -9,6 +12,8 @@ import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ApiTooManyException;
 import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.httpclient.HttpTransportClient;
+import com.vk.api.sdk.objects.users.UserXtrCounters;
+import com.vk.api.sdk.queries.users.UserField;
 import org.bson.Document;
 import org.springframework.stereotype.Component;
 
@@ -32,7 +37,7 @@ public class App {
 
         Properties properties = new Properties();
         try {
-            properties.load(App.class.getClassLoader().getResourceAsStream("static/config.properties"));
+            properties.load(App.class.getClassLoader().getResourceAsStream("config.properties"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -188,12 +193,44 @@ public class App {
 
     }
 
-    public void insertUsers(User source, User target){
-       db.insertUsers(source, target);
+    public SuccessResponse insertUsers(String sourceId, String targetId) throws ClientException, ApiException {
+        check();
+        List<UserXtrCounters> users = vk.users()
+                .get(owner)
+                .fields(UserField.FOLLOWERS_COUNT)
+                .userIds(sourceId, targetId)
+                .execute();
+        UserXtrCounters sourceCounters = users.get(0), targetCounters = users.get(1);
+
+        check();
+        boolean isPrivate = vk.execute()
+                .code(owner, String.format(
+                        "var sourceFollowers = API.friends.get({\"user_id\": %d, \"count\": 1});\n" +
+                        "var targetFollowers = API.friends.get({\"user_id\": %d, \"count\": 1});\n" +
+                        "if (!sourceFollowers || !targetFollowers) return null;\n" +
+                        "return {\"success\": true};",
+                        sourceCounters.getId(), targetCounters.getId()))
+                .execute()
+                .isJsonNull();
+        if (isPrivate) throw new ClientException("One or both of accounts is private or friends list is hidden");
+
+        User source = new User(sourceCounters.getFirstName(), sourceCounters.getLastName(), sourceCounters.getId()),
+                target = new User(targetCounters.getFirstName(), targetCounters.getLastName(), targetCounters.getId());
+        db.insertUsers(source, target);
+
+        return new SuccessResponse(source.getId(), target.getId());
     }
 
-    public Document result(int firstId, int secondId){
-        return db.result(firstId, secondId);
+    public ResultResponse result(String userId) throws IllegalArgumentException, ClientException, ApiException {
+        check();
+        UserXtrCounters user = vk.users()
+                .get(owner)
+                .userIds(userId)
+                .execute()
+                .get(0);
+        ResultResponse result = new ResultResponse(db.result(user.getId()));
+        if (result.isEmpty()) throw new IllegalArgumentException("Cannot find requested user");
+        return result;
     }
 
 }

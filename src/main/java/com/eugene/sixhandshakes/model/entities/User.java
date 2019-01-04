@@ -7,6 +7,15 @@ public class User {
     private String firstName, lastName;
     private int id;
 
+    public User() {
+    }
+
+    public User(String firstName, String lastName, int id) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.id = id;
+    }
+
     public String getFirstName() {
         return firstName;
     }
