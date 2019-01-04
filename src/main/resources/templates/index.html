@@ -6,9 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flexboxgrid/6.3.1/flexboxgrid.min.css" type="text/css">
-    <link rel="stylesheet" href="../static/style/main.css">
+    <link rel="stylesheet" href="../static/style/six-hand.css">
     <link href="https://fonts.googleapis.com/css?family=Staatliches" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="../static/six-hand-script.js"></script>
     <title>Document</title>
 </head>
 
@@ -29,15 +31,15 @@
                 <div class="row">
                     <div class="col-xs-4 separated screen">
                         <p>IN QUEUE:<br>
-                            256</p>
+                            <span id="queue">256</span></p>
                     </div>
                     <div class="col-xs-4 separated screen">
                         <p>PROCESSED:<br>
-                            256</p>
+                            <span id="processed">256</span></p>
                     </div>
                     <div class="col-xs-4 separated screen">
                         <p>AVERAGE COUNT:<br>
-                            256</p>
+                            <span id="average">256</span></p>
                     </div>
                 </div>
             </div>
@@ -53,21 +55,21 @@
                 <div class="mobile row">
                     <div class="col-xs-12">
                         <p>IN QUEUE:<br>
-                            256</p>
+                            <span id="queue-mobile">256</span></p>
                     </div>
                 </div>
                 <hr>
                 <div class="mobile row">
                     <div class="col-xs-12">
                         <p>PROCESSED:<br>
-                            256</p>
+                            <span id="processed-mobile">256</span></p>
                     </div>
                 </div>
                 <hr>
                 <div class="mobile row">
                     <div class="col-xs-12">
                         <p>AVERAGE COUNT:<br>
-                            256</p>
+                            <span id="average-mobile">256</span></p>
                     </div>
                 </div>
                 <hr>
@@ -82,13 +84,23 @@
                 <div class="row center-xs">
                     <div class="col-xs-8">
                         <label for="user_link">Write the link to your VK page<br>
-                            <input placeholder="write the link..." type="text" id="user_link"></label>
+                            <input placeholder="write the link..." type="text" id="user_link" class="second-input"></label>
                     </div>
                 </div>
                 <div class="row center-xs" id="friend-form-row">
                     <div class="col-xs-8">
-                        <label for=:friend_link">Write the link to the VK page of the required person<br>
-                            <input placeholder="write the link..." type="text" id="friend_link"></label>
+                        <label for="friend_link">Write the link to the VK page of the required person<br>
+                            <input placeholder="write the link..." type="text" id="friend_link" class="first-input"></label>
+                    </div>
+                </div>
+                <div class="row center-xs">
+                    <div class="col-xs-6 notification-server">
+                        <p>Invalid link, try another one</p>
+                    </div>
+                </div>
+                <div class="row center-xs">
+                    <div class="col-xs-6 notification-server-success">
+                        <p>Succesfully sent</p>
                     </div>
                 </div>
                 <div class="row center-xs button-row">
@@ -108,17 +120,27 @@
                 <div class="row center-xs">
                     <div class="col-xs-10">
                         <label for="user_link">Write the link to your VK page<br>
-                            <input placeholder="write the link..." type="text" id="user_link"></label>
+                            <input placeholder="write the link..." type="text" id="user_link-mobile" class="first-input"></label>
                     </div>
                 </div>
-                <div class="row center-xs" id="friend-form-row">
+                <div class="row center-xs" id="friend-form-row-mobile">
                     <div class="col-xs-10">
-                        <label for=:friend_link">Write the link to the VK page of the required person<br>
-                            <input placeholder="write the link..." type="text" id="friend_link"></label>
+                        <label for="friend_link-mobile">Write the link to the VK page of the required person<br>
+                            <input placeholder="write the link..." type="text" id="friend_link-mobile" class="second-input"></label>
+                    </div>
+                </div>
+                <div class="row center-xs">
+                    <div class="col-xs-6 notification-server">
+                        <p>Invalid link, try another one</p>
+                    </div>
+                </div>
+                <div class="row center-xs">
+                    <div class="col-xs-6 notification-server-success">
+                        <p>Successfully sent</p>
                     </div>
                 </div>
                 <div class="row center-xs button-row">
-                    <button id="digest-button" class="col-xs-3">
+                    <button id="digest-button-mobile" class="col-xs-3">
                         <p>DIGEST</p>
                     </button>
                 </div>
@@ -130,9 +152,27 @@
                         <h1>Your relations</h1>
                     </div>
                 </div>
+                <div class="row center-xs">
+                    <div class="col-xs-10">
+                        <label for="relations-finder">Write the link of the needed person</label>
+                        <input type="text" id="relations-finder" placeholder="write the link...">
+
+                    </div>
+                </div>
+                <div class="row center-xs">
+                    <div class="col-xs-6 notification">
+                        <p>Invalid link, try another one</p>
+                    </div>
+                </div>
+                <div class="row center-xs button-row">
+                    <button id="search-button" class="col-xs-3">
+                        <p>SEARCH</p>
+                    </button>
+                </div>
+
                 <div class="row center-xs relation-block-row">
                     <div class="col-xs-10">
-                        <div class="relation-connection">
+                        <div class="relation-connection" id="first-connection">
                             <div class="first-user-name-block">
                                 <p>Kirill Ivanov</p>
                             </div>
@@ -186,10 +226,22 @@
                 </div>
             </div>
         </div>
-    </main>
-    <footer>
+        <footer>
+            <div class="row center-xs">
+                <div class="col-xs-3">
+                    <p>footer</p>
+                </div>
 
-    </footer>
+                <div class="col-xs-3">
+                    <p>footer</p>
+                </div>
+                <div class="col-xs-3">
+                    <p>footer</p>
+                </div>
+            </div>
+        </footer>
+    </main>
+
 </body>
 
 </html>

@@ -87,7 +87,7 @@ main{
     margin-top: 30px;
 }
 
-.user-information-block input{
+.user-information-block input,.row #relations-finder{
     width: 100%;
     height: 30px;
     margin-top: 5px;
@@ -116,6 +116,7 @@ input::placeholder{
 input:active, input:focus {
     outline: none;
   }
+
 input{
 border: 0 solid ;
 height: 100px;
@@ -129,23 +130,23 @@ height: 100px;
     display: none;
 }
 
-#digest-button{
+#digest-button,#digest-button-mobile, #search-button{
     outline: none;
     transition: 0.3s;
     background: none;
     border: 2px solid rgb(73, 73, 73);
     border-radius: 5px;
-    -webkit-box-shadow: 0px 0px 3px 0px rgb(50, 50, 50);
-    -moz-box-shadow:    0px 0px 3px 0px rgb(50, 50, 50);
-    box-shadow:         0px 0px 3px 0px rgb(50, 50, 50);
+    -webkit-box-shadow: 0px 0px 3px 0px rgba(50, 50, 50, 0.47);
+    -moz-box-shadow:    0px 0px 3px 0px rgba(50, 50, 50, 0.47);
+    box-shadow:         0px 0px 3px 0px rgba(50, 50, 50, 0.47);
 }
 
-#digest-button:hover, .relation-connection:hover{
+#digest-button:hover, #search-button:hover{
     color: black;
     background: rgb(198, 197, 194);
 }
 
-#digest-button:active{
+#digest-button:active, #search-button:active, #digest-button-mobile:active{
     color: black;
     box-shadow: none;
 }
@@ -193,6 +194,15 @@ height: 100px;
     background-size: cover;
 }
 
+#relations-finder{
+    margin-bottom: 5px;
+    padding-left: 0px;
+}
+
+#first-connection{
+    margin-top: 20px;
+}
+
 .container{
     overflow: hidden;
     padding: 10px 10px 20px 10px;
@@ -203,6 +213,32 @@ height: 100px;
     -moz-box-shadow:    0px 0px 22px 0px rgba(50, 50, 50, 0.75);
     box-shadow:         0px 0px 22px 0px rgba(50, 50, 50, 0.75);
     margin-bottom: 50px;
+}
+
+.row .notification p, .row .notification-server p{
+    font-size: 15px;
+    color: #f50808;
+    margin: 0px;
+}
+
+.row .notification-server-success p{
+    font-size: 15px;
+    color: #10a316;
+    margin: 0px;
+}  
+footer{
+    width: 100%;
+    overflow: hidden;
+    color: rgb(231, 170, 78);
+    background:rgb(37, 37, 36);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 15px;
+    position: static;
+    bottom: 0px;
+}
+
+body{
+    height: 100%;
 }
 
 @media all and (max-width:720px){
@@ -220,6 +256,11 @@ height: 100px;
 
     .mobile hr{
         border: 1px solid rgb(73, 73, 73);
+    }
+
+    #digest-button:hover, .relation-connection:hover{
+        color: black;
+        background: inherit;
     }
 
     main .container{
@@ -248,12 +289,17 @@ height: 100px;
     .relation-block .relation-connection{
         border: 0px;
         border-radius: 0;
-        border-top: 2px solid black;    
-        /* border-bottom: 2px solid black;     */
+        border-bottom: 2px solid black;    
         flex-direction: column;
         font-size: 15px;
         box-shadow: none;
     }
+
+    #first-connection{
+        border-top: 2px solid black;  
+        margin-top: 20px;
+    }
+
     div .handshake-view p{
         font-size: 35px;
         padding-right: 12px;

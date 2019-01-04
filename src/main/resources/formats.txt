@@ -1,0 +1,14 @@
+url: /get_json
+	for setting new relation:
+		to server:{url1:string, url2:string}
+		back: "ok"
+
+
+	for searching relations:
+		to server: {url1:string}
+		back: array [{url1: string, url2: string, rels: number}, ...]
+
+url: /get_update
+	for renewing information on the page:
+		to server: {type:"get_update"}
+		back:{queue:..., processed:..., average:...}
