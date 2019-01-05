@@ -52,6 +52,7 @@ $("document").ready(function(){
                     url2: $(".second-input")[1].value.slice(15)
                 },
                 success: function(data){
+                    $(".notification-server").fadeOut({duration:500})
                     $(".notification-server-success").fadeIn({duration:1000});
                     setTimeout(function(){
                         $(".notification-server-success").fadeOut({duration:1000});
