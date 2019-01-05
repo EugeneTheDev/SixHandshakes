@@ -12,20 +12,23 @@ import java.util.HashMap;
 import java.util.List;
 
 import static com.mongodb.client.model.Filters.*;
+import static com.mongodb.client.model.Updates.*;
 
 
 public class Db {
 
-    private MongoCollection<Document> users, results;
+    private MongoCollection<Document> users, results, averageCountCollection;
     private ObjectMapper mapper;
 
-    public Db(MongoCollection<Document> users, MongoCollection<Document> results) {
+    public Db(MongoCollection<Document> users, MongoCollection<Document> results,
+              MongoCollection<Document> averageCountCollection) {
         this.users = users;
         this.results = results;
+        this.averageCountCollection = averageCountCollection;
         mapper = new ObjectMapper();
     }
 
-    public void insertUsers(User source, User target){
+    public boolean insertUsers(User source, User target){
         try {
             Document doc = users.find(
                     or(
@@ -40,7 +43,7 @@ public class Db {
                     )
             ).first();
 
-            if (doc != null) return;
+            if (doc != null) return false;
 
             doc = results.find(
                     or(
@@ -55,7 +58,7 @@ public class Db {
                     )
             ).first();
 
-            if (doc != null) return;
+            if (doc != null) return false;
 
             users.insertOne(
                     new Document(
@@ -67,6 +70,8 @@ public class Db {
         } catch (JsonProcessingException e) {
             System.out.println("Unable to insert");
         }
+
+        return true;
     }
 
     public HashMap<String, User> nextUsers(){
@@ -94,12 +99,21 @@ public class Db {
                             "count", count
                     )
             );
+
             users.deleteMany(
                     and(
                             eq("source.id", source.getId()),
                             eq("target.id", target.getId())
                     )
             );
+
+            double averageCount = averageCount();
+            long resultsCount = results.countDocuments();
+            averageCountCollection.updateOne(
+                    exists("averageCount"),
+                    set("averageCount", (averageCount*(resultsCount-1) + count)/resultsCount)
+            );
+
         } catch (JsonProcessingException e) {
             System.out.println("Unable to insert");
         }
@@ -119,5 +133,19 @@ public class Db {
         }
 
         return new ArrayList<>();
+    }
+
+    public long usersCount(){
+        return users.countDocuments();
+    }
+
+    public long resultsCount(){
+        return results.countDocuments();
+    }
+
+    public double averageCount(){
+        return averageCountCollection.find()
+                .first()
+                .getDouble("averageCount");
     }
 }

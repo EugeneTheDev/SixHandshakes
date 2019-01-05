@@ -2,8 +2,8 @@ package com.eugene.sixhandshakes.model;
 
 import com.eugene.sixhandshakes.controllers.responses.ResultResponse;
 import com.eugene.sixhandshakes.controllers.responses.SuccessResponse;
+import com.eugene.sixhandshakes.controllers.responses.UpdateResponse;
 import com.eugene.sixhandshakes.model.entities.User;
-import com.google.gson.JsonElement;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.vk.api.sdk.client.VkApiClient;
@@ -55,13 +55,14 @@ public class App {
     }
 
     private void initDb(Properties properties){
-        MongoClientURI uri  = new MongoClientURI(String
-                .format("mongodb://%s:%s@%s:%s/%s",properties.getProperty("db-user"),
-                        properties.getProperty("db-password"), properties.getProperty("db-host"),
-                        properties.getProperty("db-port"), properties.getProperty("db-name")));
+        MongoClientURI uri  = new MongoClientURI(String.format("mongodb://%s:%s@%s:%s/%s",
+                properties.getProperty("db-user"), properties.getProperty("db-password"),
+                properties.getProperty("db-host"), properties.getProperty("db-port"),
+                properties.getProperty("db-name")));
         MongoClient client = new MongoClient(uri);
         db = new Db(client.getDatabase(uri.getDatabase()).getCollection(properties.getProperty("db-users")),
-                client.getDatabase(uri.getDatabase()).getCollection(properties.getProperty("db-results")));
+                client.getDatabase(uri.getDatabase()).getCollection(properties.getProperty("db-results")),
+                client.getDatabase(uri.getDatabase()).getCollection(properties.getProperty("db-average-count")));
     }
 
     private void startCheckThread(){
@@ -216,21 +217,26 @@ public class App {
 
         User source = new User(sourceCounters.getFirstName(), sourceCounters.getLastName(), sourceCounters.getId()),
                 target = new User(targetCounters.getFirstName(), targetCounters.getLastName(), targetCounters.getId());
-        db.insertUsers(source, target);
+
+        if (!db.insertUsers(source, target)) throw new ClientException("This pair already exists in database");
 
         return new SuccessResponse(source.getId(), target.getId());
     }
 
-    public ResultResponse result(String userId) throws IllegalArgumentException, ClientException, ApiException {
+    public ResultResponse<List<Document>> result(String userId) throws IllegalArgumentException, ClientException, ApiException {
         check();
         UserXtrCounters user = vk.users()
                 .get(owner)
                 .userIds(userId)
                 .execute()
                 .get(0);
-        ResultResponse result = new ResultResponse(db.result(user.getId()));
+        List<Document> result = db.result(user.getId());
         if (result.isEmpty()) throw new IllegalArgumentException("Cannot find requested user");
-        return result;
+        return new ResultResponse<>(result);
+    }
+
+    public UpdateResponse update(){
+        return new UpdateResponse(db.resultsCount(),db.usersCount(), db.averageCount());
     }
 
 }

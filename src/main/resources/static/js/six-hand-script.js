@@ -6,9 +6,10 @@ $("document").ready(function(){
     
         
     function relationInserter(data){
-        var relation_element = '<div class="row center-xs relation-block-row"><div class="col-xs-10"><div class="relation-connection"><div class="first-user-name-block"><p>' + data.user1 + '</p></div><div class="handshake-view"><div><p class="relations-number">' + data.rels + '<p></div><div class="shaking-img"></div></div><div class="second-user-name-block"><p>' + data.user2 + '</p></div></div></div></div>'
+        var source = data.source, target = data.target;
+        var relation_element = '<div class="row center-xs relation-block-row"><div class="col-xs-10"><div class="relation-connection"><div class="first-user-name-block"><p>' + source.firstName + ' ' +source.lastName + '</p></div><div class="handshake-view"><div><p class="relations-number">' + data.count + '<p></div><div class="shaking-img"></div></div><div class="second-user-name-block"><p>' + target.firstName + ' ' + target.lastName + '</p></div></div></div></div>';
         var x = document.createElement('div');
-        x.innerHTML = relation_element
+        x.innerHTML = relation_element;
         $(".relation-block").append(x);
         $(x).hide().fadeIn({duration:500});
     }
@@ -18,14 +19,14 @@ $("document").ready(function(){
         if (/http\w*:\/\/vk.com\/\w+/.test($("input")[4].value)){
             $(".notification").fadeOut({duration:500});
             $.ajax({
-                url: "http://sheltered-sands-71110.herokuapp.com/get_json",
+                url: "api/results/get",
                 method: "GET",
                 data:{
-                    url: $("input")[4].value.slice(15)
+                    user_id: $("input")[4].value.slice(15)
                 },
                 success: function(data){
                             $(".relation-block-row").remove();
-                            for (var i=0; i<data.connections.length;i++) relationInserter(data.connections[i]);
+                            for (var i=0; i<data.result.length;i++) relationInserter(data.result[i]);
                             $("input")[4].value = "";
                         }
                 ,
@@ -45,11 +46,11 @@ $("document").ready(function(){
             if (/http\w*:\/\/vk.com\/\w+/.test($(".first-input")[1].value) && /http\w*:\/\/vk.com\/\w+/.test($(".second-input")[1].value)){
             $(".notification").fadeOut({duration:500});
             $.ajax({
-                url: "http://sheltered-sands-71110.herokuapp.com/get_json",
+                url: "api/users/insert",
                 method: "GET",
                 data:{
-                    url1: $(".first-input")[1].value.slice(15),
-                    url2: $(".second-input")[1].value.slice(15)
+                    source: $(".first-input")[1].value.slice(15),
+                    target: $(".second-input")[1].value.slice(15)
                 },
                 success: function(data){
                     $(".notification-server").fadeOut({duration:500})
@@ -72,14 +73,14 @@ $("document").ready(function(){
             if (/http\w*:\/\/vk.com\/\w+/.test($(".first-input")[0].value) && /http\w*:\/\/vk.com\/\w+/.test($(".second-input")[0].value)){
             $(".notification").fadeOut({duration:500});
             $.ajax({
-                url: "http://sheltered-sands-71110.herokuapp.com/get_json",
+                url: "api/users/insert",
                 method: "GET",
                 data:{
-                    url1: $(".first-input")[0].value.slice(15),
-                    url2: $(".second-input")[0].value.slice(15)
+                    source: $(".first-input")[0].value.slice(15),
+                    target: $(".second-input")[0].value.slice(15)
                 },
                 success: function(data){
-                    $(".notification-server").fadeOut({duration:500})
+                    $(".notification-server").fadeOut({duration:500});
                     $(".notification-server-success").fadeIn({duration:1000});
                     setTimeout(function(){
                         $(".notification-server-success").fadeOut({duration:1000});
@@ -102,11 +103,8 @@ $("document").ready(function(){
     
     function updateRightNowInformation(){
         $.ajax({
-                url: "http://sheltered-sands-71110.herokuapp.com/get_update",
+                url: "api/update",
                 method: "GET",
-                data:{
-                    type: "get_update",
-                },
                 success: function(data){
                     $("#queue").html(data.queue);
                     $("#queue-mobile").html(data.queue);

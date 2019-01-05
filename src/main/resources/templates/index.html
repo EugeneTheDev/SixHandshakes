@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flexboxgrid/6.3.1/flexboxgrid.min.css" type="text/css">
-    <link rel="stylesheet" href="../static/style/six-hand.css">
+    <link rel="stylesheet" href="../static/css/six-hand.css" th:href="@{css/six-hand.css}">
     <link href="https://fonts.googleapis.com/css?family=Staatliches" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-    <script src="../static/six-hand-script.js"></script>
-    <title>Document</title>
+    <script src="../static/js/six-hand-script.js" th:src="@{js/six-hand-script.js}"></script>
+    <title>Six Handshakes</title>
 </head>
 
 <body>
@@ -172,75 +172,13 @@
                         <p>SEARCH</p>
                     </button>
                 </div>
-
-                <div class="row center-xs relation-block-row">
-                    <div class="col-xs-10">
-                        <div class="relation-connection" id="first-connection">
-                            <div class="first-user-name-block">
-                                <p>Kirill Ivanov</p>
-                            </div>
-                            <div class="handshake-view">
-                                <div>
-                                    <p class="relations-number">4<p>
-                                </div>
-                                <div class="shaking-img"></div>
-                            </div>
-                            <div class="second-user-name-block">
-                                <p>Andrew Bragin</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row center-xs relation-block-row">
-                    <div class="col-xs-10">
-                        <div class="relation-connection">
-                            <div class="first-user-name-block">
-                                <p>Kirill Ivanov</p>
-                            </div>
-                            <div class="handshake-view">
-                                <div>
-                                    <p class="relations-number">3<p>
-                                </div>
-                                <div class="shaking-img"></div>
-                            </div>
-                            <div class="second-user-name-block">
-                                <p>Andrew Bragin</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row center-xs relation-block-row">
-                    <div class="col-xs-10">
-                        <div class="relation-connection">
-                            <div class="first-user-name-block">
-                                <p>Kirill Ivanov</p>
-                            </div>
-                            <div class="handshake-view">
-                                <div>
-                                    <p class="relations-number">1<p>
-                                </div>
-                                <div class="shaking-img"></div>
-                            </div>
-                            <div class="second-user-name-block">
-                                <p>Andrew Bragin</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div></main>
         </div>
         <div class="footer">
             <div class="row center-xs">
                 <div class="col-xs-3">
-                    <p>footer</p>
-                </div>
-
-                <div class="col-xs-3">
-                    <p>footer</p>
-                </div>
-                <div class="col-xs-3">
-                    <p>footer</p>
+                    <p>Made by EugeneTheDev and KirillIvano</p>
                 </div>
             </div>
         </div>
