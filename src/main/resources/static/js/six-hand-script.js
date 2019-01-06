@@ -1,14 +1,15 @@
 $("document").ready(function(){
     $(".notification").hide();
     $(".notification-server").hide();
-    $(".notification-server-success").hide();
-    
-    
-        
+    $(".notification-server-success").hide();    
+
+    // used for the searcher form
     function relationInserter(data){
         var source = data.source, target = data.target;
+        // integrating block
         var relation_element = '<div class="row center-xs relation-block-row"><div class="col-xs-10"><div class="relation-connection"><div class="first-user-name-block"><p>' + source.firstName + ' ' +source.lastName + '</p></div><div class="handshake-view"><div><p class="relations-number">' + data.count + '<p></div><div class="shaking-img"></div></div><div class="second-user-name-block"><p>' + target.firstName + ' ' + target.lastName + '</p></div></div></div></div>';
         var x = document.createElement('div');
+        //animation creating with before - defining the element 
         x.innerHTML = relation_element;
         $(".relation-block").append(x);
         $(x).hide().fadeIn({duration:500});
@@ -25,9 +26,21 @@ $("document").ready(function(){
                     user_id: $("input")[4].value.slice(15)
                 },
                 success: function(data){
-                            $(".relation-block-row").remove();
-                            for (var i=0; i<data.result.length;i++) relationInserter(data.result[i]);
-                            $("input")[4].value = "";
+                            if (data.success){
+                                $(".notification-search-error").fadeOut({duration:1000});
+                                $(".relation-block-row").remove();
+                                var arrayOfRelations = data.result.sort(function(a,b)){
+                                    return a.count-b.count;
+                                }
+                                for (var i=0; i<data.result.length;i++){
+                                    relationInserter(data.result[i]);
+                                }
+                                
+                            }else{
+                                $(".notification-search-error").fadeIn({duration:1000});
+                                $("#search-error").text(data.message);
+                            } 
+
                         }
                 ,
                 error: function(){
@@ -38,40 +51,58 @@ $("document").ready(function(){
         }else{
             $(".notification").fadeIn({duration:500});
         }
-    }
+    $("input")[4].value = "";
+}
     
     
     function requestValidator(){
         if (window.innerWidth<=720){
             if (/http\w*:\/\/vk.com\/\w+/.test($(".first-input")[1].value) && /http\w*:\/\/vk.com\/\w+/.test($(".second-input")[1].value)){
-            $(".notification").fadeOut({duration:500});
-            $.ajax({
-                url: "api/users/insert",
-                method: "GET",
-                data:{
-                    source: $(".first-input")[1].value.slice(15),
-                    target: $(".second-input")[1].value.slice(15)
-                },
-                success: function(data){
-                    $(".notification-server").fadeOut({duration:500})
-                    $(".notification-server-success").fadeIn({duration:1000});
-                    setTimeout(function(){
-                        $(".notification-server-success").fadeOut({duration:1000});
-                    }, 5000);                       
-                    $(".first-input")[1].value = "";
-                    $(".second-input")[1].value = "";
+                $(".notification").fadeOut({duration:500});
+                $(".notification-server").fadeOut({duration:500})
+
+                $.ajax({
+                    url: "api/users/insert",
+                    method: "GET",
+                    data:{
+                        source: $(".first-input")[1].value.slice(15),
+                        target: $(".second-input")[1].value.slice(15)
+                    },
+                    success: function(data){
+                        
+                        $(".notification-server-error").fadeOut({duration:1000});
+
+                        if (data.success){
+                            $(".notification-server-success").fadeIn({duration:1000}); 
+                            setTimeout(function(){
+                                $(".notification-server-success").fadeOut({duration:1000});
+                                }, 5000);                       
+                            $(".first-input")[1].value = "";
+                            $(".second-input")[1].value = "";
+                        }else{
+                            $(".notification-server-error").fadeIn({duration:1000});
+                            $("#server-error-mobile").text(data.message);
+                        }
+                        
+                        $(".first-input")[1].value = "";
+                        $(".second-input")[1].value = "";
+                        }
+                    ,
+                    error: function(){
+                        alert("error, reload the page");
+                        $(".first-input")[0].value = "";
+                        $(".second-input")[0].value = "";
+
                     }
-                ,
-                error: function(){
-                    alert("Try to reload the page");
-                }
 
             });}else{
-                $(".notification-server").fadeIn({duration:1000});
+                alert("try to reload the page, there is an error");
             }
         }else{
             if (/http\w*:\/\/vk.com\/\w+/.test($(".first-input")[0].value) && /http\w*:\/\/vk.com\/\w+/.test($(".second-input")[0].value)){
             $(".notification").fadeOut({duration:500});
+            $(".notification-server").fadeOut({duration:500})
+
             $.ajax({
                 url: "api/users/insert",
                 method: "GET",
@@ -80,22 +111,34 @@ $("document").ready(function(){
                     target: $(".second-input")[0].value.slice(15)
                 },
                 success: function(data){
-                    $(".notification-server").fadeOut({duration:500});
-                    $(".notification-server-success").fadeIn({duration:1000});
-                    setTimeout(function(){
-                        $(".notification-server-success").fadeOut({duration:1000});
-                    }, 10000);
-                    $(".first-input")[0].value = "";
-                    $(".second-input")[0].value = "";
-                    
-                }
+                        
+                        $(".notification-server-error").fadeOut({duration:1000});
+
+                        if (data.success){
+                            $(".notification-server-success").fadeIn({duration:1000});
+                            setTimeout(function(){
+                                $(".notification-server-success").fadeOut({duration:1000});
+                                }, 5000);                       
+                            $(".first-input")[0].value = "";
+                            $(".second-input")[0].value = "";
+                        }else{
+                            $(".notification-server-error").fadeIn({duration:1000});
+                            $("#server-error").text(data.message);
+                        }
+                        
+                        $(".first-input")[0].value = "";
+                        $(".second-input")[0].value = "";
+                    }
                 ,
                 error: function(){
-                    alert("Try to reload the page");
+                    $(".notification-server-error").fadeIn({duration:1000});
+                    $(".first-input")[0].value = "";
+                    $(".second-input")[0].value = "";
+
                 }
 
             });}else{
-                $(".notification-server").fadeIn({duration:500});
+                alert("try to reload the page, there is an error");
             }
         }
     }
@@ -115,7 +158,7 @@ $("document").ready(function(){
 
                 },
                 error: function(){
-                    console.log("error with updating ${this}");
+                    console.log("error with updating");
                 }
 
             });

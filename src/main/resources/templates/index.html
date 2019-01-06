@@ -15,170 +15,187 @@
 </head>
 
 <body>
-  <div class="additional-wrapper">
-   <div class="without-footer">
-    <header>
-        <p class="special-first">SIX</p>
-        <p class="special-second">HANDSHAKES</p>
-    </header>
-    <main>
-    
-        <div class="container">
-            <div class="about-activity-block screen">
-                <div class="row center-xs">
-                    <div class="col-xs-4">
-                        <h1>Right now:</h1>
-                    </div>
-                </div>
+    <div class="additional-wrapper">
+        <div class="without-footer">
+            <header>
+                <p class="special-first">SIX</p>
+                <p class="special-second">HANDSHAKES</p>
+            </header>
+            <main>
 
-                <div class="row">
-                    <div class="col-xs-4 separated screen">
-                        <p>IN QUEUE:<br>
-                            <span id="queue">256</span></p>
-                    </div>
-                    <div class="col-xs-4 separated screen">
-                        <p>PROCESSED:<br>
-                            <span id="processed">256</span></p>
-                    </div>
-                    <div class="col-xs-4 separated screen">
-                        <p>AVERAGE COUNT:<br>
-                            <span id="average">256</span></p>
-                    </div>
-                </div>
-            </div>
-            <!-- for-mobile -->
-            <!-- ----------------------------------- -->
-            <div class="about-activity-block mobile">
-                <div class="row center-xs">
-                    <div class="col-xs-12">
-                        <h1>Right now:</h1>
-                    </div>
-                </div>
-                <hr>
-                <div class="mobile row">
-                    <div class="col-xs-12">
-                        <p>IN QUEUE:<br>
-                            <span id="queue-mobile">256</span></p>
-                    </div>
-                </div>
-                <hr>
-                <div class="mobile row">
-                    <div class="col-xs-12">
-                        <p>PROCESSED:<br>
-                            <span id="processed-mobile">256</span></p>
-                    </div>
-                </div>
-                <hr>
-                <div class="mobile row">
-                    <div class="col-xs-12">
-                        <p>AVERAGE COUNT:<br>
-                            <span id="average-mobile">256</span></p>
-                    </div>
-                </div>
-                <hr>
-            </div>
-            <!-- ---------------------------------- -->
-            <div class="user-information-block screen">
-                <div class="row center-xs">
-                    <div class="col-xs-6">
-                        <h1>Become the next one!</h1>
-                    </div>
-                </div>
-                <div class="row center-xs">
-                    <div class="col-xs-8">
-                        <label for="user_link">Write the link to your VK page<br>
-                            <input placeholder="write the link..." type="text" id="user_link" class="second-input"></label>
-                    </div>
-                </div>
-                <div class="row center-xs" id="friend-form-row">
-                    <div class="col-xs-8">
-                        <label for="friend_link">Write the link to the VK page of the required person<br>
-                            <input placeholder="write the link..." type="text" id="friend_link" class="first-input"></label>
-                    </div>
-                </div>
-                <div class="row center-xs">
-                    <div class="col-xs-6 notification-server">
-                        <p>Invalid link, try another one</p>
-                    </div>
-                </div>
-                <div class="row center-xs">
-                    <div class="col-xs-6 notification-server-success">
-                        <p>Succesfully sent</p>
-                    </div>
-                </div>
-                <div class="row center-xs button-row">
-                    <button id="digest-button" class="col-xs-3">
-                        <p>DIGEST</p>
-                    </button>
-                </div>
-            </div>
+                <div class="container">
+                    <div class="about-activity-block screen">
+                        <div class="row center-xs">
+                            <div class="col-xs-4">
+                                <h1>Right now:</h1>
+                            </div>
+                        </div>
 
-            <!-- for mobile -->
-            <div class="user-information-block mobile">
-                <div class="row center-xs">
-                    <div class="col-xs-12">
-                        <h1>Become the next!</h1>
+                        <div class="row">
+                            <div class="col-xs-4 separated screen">
+                                <p>IN QUEUE:<br>
+                                    <span id="queue">256</span></p>
+                            </div>
+                            <div class="col-xs-4 separated screen">
+                                <p>PROCESSED:<br>
+                                    <span id="processed">256</span></p>
+                            </div>
+                            <div class="col-xs-4 separated screen">
+                                <p>AVERAGE COUNT:<br>
+                                    <span id="average">256</span></p>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="row center-xs">
-                    <div class="col-xs-10">
-                        <label for="user_link">Write the link to your VK page<br>
-                            <input placeholder="write the link..." type="text" id="user_link-mobile" class="first-input"></label>
+                    <!-- for-mobile -->
+                    <!-- ----------------------------------- -->
+                    <div class="about-activity-block mobile">
+                        <div class="row center-xs">
+                            <div class="col-xs-12">
+                                <h1>Right now:</h1>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="mobile row">
+                            <div class="col-xs-12">
+                                <p>IN QUEUE:<br>
+                                    <span id="queue-mobile">256</span></p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="mobile row">
+                            <div class="col-xs-12">
+                                <p>PROCESSED:<br>
+                                    <span id="processed-mobile">256</span></p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="mobile row">
+                            <div class="col-xs-12">
+                                <p>AVERAGE COUNT:<br>
+                                    <span id="average-mobile">256</span></p>
+                            </div>
+                        </div>
+                        <hr>
                     </div>
-                </div>
-                <div class="row center-xs" id="friend-form-row-mobile">
-                    <div class="col-xs-10">
-                        <label for="friend_link-mobile">Write the link to the VK page of the required person<br>
-                            <input placeholder="write the link..." type="text" id="friend_link-mobile" class="second-input"></label>
+                    <!-- ---------------------------------- -->
+                    <div class="user-information-block screen">
+                        <div class="row center-xs">
+                            <div class="col-xs-6">
+                                <h1>Become the next one!</h1>
+                            </div>
+                        </div>
+                        <div class="row center-xs">
+                            <div class="col-xs-8">
+                                <label for="user_link">Write the link to your VK page<br>
+                                    <input placeholder="write the link..." type="text" id="user_link" class="second-input"></label>
+                            </div>
+                        </div>
+                        <div class="row center-xs" id="friend-form-row">
+                            <div class="col-xs-8">
+                                <label for="friend_link">Write the link to the VK page of the required person<br>
+                                    <input placeholder="write the link..." type="text" id="friend_link" class="first-input"></label>
+                            </div>
+                        </div>
+                        <div class="row center-xs">
+                            <div class="col-xs-6 notification-server">
+                                <p>Invalid link, try another one</p>
+                            </div>
+                        </div>
+                        <div class="row center-xs">
+                            <div class="col-xs-6 notification-server-success">
+                                <p>Succesfully sent</p>
+                            </div>
+                        </div>
+                        <div class="row center-xs">
+                            <div class="col-xs-6 notification-server-error">
+                                <p id="server-error"></p>
+                            </div>
+                        </div>
+                        <div class="row center-xs button-row">
+                            <button id="digest-button" class="col-xs-3">
+                                <p>DIGEST</p>
+                            </button>
+                        </div>
                     </div>
-                </div>
-                <div class="row center-xs">
-                    <div class="col-xs-6 notification-server">
-                        <p>Invalid link, try another one</p>
-                    </div>
-                </div>
-                <div class="row center-xs">
-                    <div class="col-xs-6 notification-server-success">
-                        <p>Successfully sent</p>
-                    </div>
-                </div>
-                <div class="row center-xs button-row">
-                    <button id="digest-button-mobile" class="col-xs-3">
-                        <p>DIGEST</p>
-                    </button>
-                </div>
-            </div>
-            <!-- ---------------------------------- -->
-            <div class="relation-block">
-                <div class="row center-xs">
-                    <div class="col-xs-12">
-                        <h1>Your relations</h1>
-                    </div>
-                </div>
-                <div class="row center-xs">
-                    <div class="col-xs-10">
-                        <label for="relations-finder">Write the link of the needed person</label>
-                        <input type="text" id="relations-finder" placeholder="write the link...">
 
+                    <!-- for mobile -->
+                    <div class="user-information-block mobile">
+                        <div class="row center-xs">
+                            <div class="col-xs-12">
+                                <h1>Become the next!</h1>
+                            </div>
+                        </div>
+                        <div class="row center-xs">
+                            <div class="col-xs-10">
+                                <label for="user_link">Write the link to your VK page<br>
+                                    <input placeholder="write the link..." type="text" id="user_link-mobile" class="first-input"></label>
+                            </div>
+                        </div>
+                        <div class="row center-xs" id="friend-form-row-mobile">
+                            <div class="col-xs-10">
+                                <label for="friend_link-mobile">Write the link to the VK page of the required person<br>
+                                    <input placeholder="write the link..." type="text" id="friend_link-mobile" class="second-input"></label>
+                            </div>
+                        </div>
+                        <div class="row center-xs">
+                            <div class="col-xs-6 notification-server">
+                                <p>Invalid link, try another one</p>
+                            </div>
+                        </div>
+                        <div class="row center-xs">
+                            <div class="col-xs-6 notification-server-success">
+                                <p>Successfully sent</p>
+                            </div>
+                        </div>
+                        <div class="row center-xs">
+                            <div class="col-xs-6 notification-server-error">
+                                <p id="server-error-mobile"></p>
+                            </div>
+                        </div>
+                        <div class="row center-xs button-row">
+                            <button id="digest-button-mobile" class="col-xs-3">
+                                <p>DIGEST</p>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- ---------------------------------- -->
+                    <div class="relation-block">
+                        <div class="row center-xs">
+                            <div class="col-xs-12">
+                                <h1>Your relations</h1>
+                            </div>
+                        </div>
+                        <div class="row center-xs">
+                            <div class="col-xs-10">
+                                <label for="relations-finder">Write the link of the needed person</label>
+                                <input type="text" id="relations-finder" placeholder="write the link...">
+
+                            </div>
+                        </div>
+                        <div class="row center-xs">
+                            <div class="col-xs-6 notification">
+                                <p>Invalid link, try another one</p>
+                            </div>
+                        </div>
+                        <div class="row center-xs">
+                            <div class="col-xs-6 notification-search-error">
+                                <p id="search-error"></p>
+                            </div>
+                        </div>
+                        <div class="row center-xs button-row">
+                            <button id="search-button" class="col-xs-3">
+                                <p>SEARCH</p>
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <div class="row center-xs">
-                    <div class="col-xs-6 notification">
-                        <p>Invalid link, try another one</p>
-                    </div>
-                </div>
-                <div class="row center-xs button-row">
-                    <button id="search-button" class="col-xs-3">
-                        <p>SEARCH</p>
-                    </button>
-                </div>
-            </div>
-        </div></main>
+            </main>
         </div>
         <div class="footer">
             <div class="row center-xs">
-                <div class="col-xs-3">
-                    <p>Made by EugeneTheDev and KirillIvano</p>
+                <div class="col-xs-10">
+                    <p>Made by <a href="https://github.com/EugeneTheDev" class="developer-a">EugeneTheDev</a> and <a href="
+https://github.com/KirillIvano" class="developer-a">KirillIvano</a></p>
                 </div>
             </div>
         </div>

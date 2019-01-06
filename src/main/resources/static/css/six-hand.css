@@ -1,5 +1,6 @@
 html{
     height: 100%;
+    width: 100%;
 }
 
 body{
@@ -61,7 +62,7 @@ main{
 
 
 .without-footer {
-    padding-bottom: 90px;
+    padding-bottom: 100px;
 }
 
 .about-activity-block, .user-information-block, .relation-block{
@@ -167,6 +168,7 @@ input{
 
 .button-row{
     margin-top: -5px;
+    margin-bottom: 10px;
 }
 
 .relation-block{
@@ -176,9 +178,6 @@ input{
 .relation-connection{
     border: 2px solid black;
     border-radius: 5px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
     -webkit-box-shadow: 0px 0px 5px 0px rgb(50, 50, 50);
     -moz-box-shadow:    0px 0px 5px 0px rgb(50, 50, 50);
     box-shadow:         0px 0px 5px 0px rgb(50, 50, 50);
@@ -227,16 +226,15 @@ input{
     -moz-box-shadow:    0px 0px 22px 0px rgba(50, 50, 50, 0.75);
     box-shadow:         0px 0px 22px 0px rgba(50, 50, 50, 0.75);
     margin-bottom: 50px;
-    padding-bottom: 90px;
+    padding-bottom: 20px;
     margin-top: 150px;
 }
 
-.row .notification p, .row .notification-server p{
+.row .notification p, .row .notification-server p, .notification-search-error p, .notification-server-error p{
     font-size: 15px;
     color: #f50808;
     margin: 0px;
     margin-bottom: 10px;
-
 }
 
 .row .notification-server-success p{
@@ -246,15 +244,27 @@ input{
     margin-bottom: 10px;
 }  
 .footer{
-        color: rgb(231, 170, 78);
-        background:rgb(37, 37, 36);
-        font-family: 'Montserrat', sans-serif;
-        font-size: 15px;
+      color: rgb(231, 170, 78);
+      background:rgb(37, 37, 36);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 15px;
       position: absolute;
       left: 0;
       bottom: 0;
       width: 100%;
-      height: 80px;}
+      height: 90px;}
+.footer p{
+    line-height: 30px;
+}
+.developer-a{
+    text-decoration: none;
+    color:rgb(231, 229, 78);
+    transition: 1s;
+}
+
+.developer-a:hover{
+    box-shadow:0 0px 0 4px rgba(231, 229, 78, 0.6), 0 0px 0px 8px rgba(231, 229, 78, 0.3);
+}
 
 body{
     height: 100%;
@@ -325,7 +335,9 @@ body{
         font-size: 35px;
         padding-right: 12px;
     }
-    
+    .container{
+        padding-bottom: 120px;
+    }
     .shaking-img{
         height: 40px;
         width: 40px;
