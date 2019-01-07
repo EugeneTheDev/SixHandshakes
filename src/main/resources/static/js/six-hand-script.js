@@ -32,6 +32,7 @@ $("document").ready(function(){
                                 var arrayOfRelations = data.result.sort(function(a,b){
                                     return b.count-a.count;
                                 })
+
                                 for (var i=0; i<data.result.length;i++){
                                     relationInserter(arrayOfRelations[i]);
                                 }
