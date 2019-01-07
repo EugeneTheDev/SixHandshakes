@@ -29,11 +29,11 @@ $("document").ready(function(){
                             if (data.success){
                                 $(".notification-search-error").fadeOut({duration:1000});
                                 $(".relation-block-row").remove();
-                                var arrayOfRelations = data.result.sort(function(a,b)){
-                                    return a.count-b.count;
-                                }
+                                var arrayOfRelations = data.result.sort(function(a,b){
+                                    return b.count-a.count;
+                                })
                                 for (var i=0; i<data.result.length;i++){
-                                    relationInserter(data.result[i]);
+                                    relationInserter(arrayOfRelations[i]);
                                 }
                                 
                             }else{
