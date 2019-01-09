@@ -101,26 +101,28 @@ public class App {
             try {
 
                 isRepeat = false;
-                if(!vk.friends()
-                        .getMutual(owner)
-                        .sourceUid(sourceId)
-                        .targetUid(targetId)
-                        .execute().isEmpty()) return count+2;
+                synchronized (vk) {
+                    if(!vk.friends()
+                            .getMutual(owner)
+                            .sourceUid(sourceId)
+                            .targetUid(targetId)
+                            .execute().isEmpty()) return count+2;
 
-                int i=0;
-                do {
+                    int i=0;
+                    do {
 
-                    buffer = vk.friends()
-                            .get(owner)
-                            .count(4000)
-                            .offset(i)
-                            .userId(sourceId)
-                            .execute()
-                            .getItems();
-                    friends.addAll(buffer);
-                    i+=4000;
+                        buffer = vk.friends()
+                                .get(owner)
+                                .count(4000)
+                                .offset(i)
+                                .userId(sourceId)
+                                .execute()
+                                .getItems();
+                        friends.addAll(buffer);
+                        i+=4000;
 
-                } while(!buffer.isEmpty());
+                    } while(!buffer.isEmpty());
+                }
 
                 for (Integer friend: friends){
                     String s = friend.toString() + (count + 1);
@@ -154,13 +156,17 @@ public class App {
                     do {
 
                         check();
-                        buffer = vk.friends()
-                                .get(owner)
-                                .count(4000)
-                                .offset(i)
-                                .userId(sourceId)
-                                .execute()
-                                .getItems();
+
+                        synchronized (vk) {
+                            buffer = vk.friends()
+                                    .get(owner)
+                                    .count(4000)
+                                    .offset(i)
+                                    .userId(sourceId)
+                                    .execute()
+                                    .getItems();
+                        }
+
                         i += 4000;
 
                         for (Integer user : buffer)
@@ -195,24 +201,35 @@ public class App {
     }
 
     public SuccessResponse insertUsers(String sourceId, String targetId) throws ClientException, ApiException {
-        check();
-        List<UserXtrCounters> users = vk.users()
-                .get(owner)
-                .fields(UserField.FOLLOWERS_COUNT)
-                .userIds(sourceId, targetId)
-                .execute();
-        UserXtrCounters sourceCounters = users.get(0), targetCounters = users.get(1);
+        if (sourceId.equals(targetId)) throw new ClientException("Users must be different");
 
         check();
-        boolean isPrivate = vk.execute()
-                .code(owner, String.format(
-                        "var sourceFollowers = API.friends.get({\"user_id\": %d, \"count\": 1});\n" +
-                        "var targetFollowers = API.friends.get({\"user_id\": %d, \"count\": 1});\n" +
-                        "if (!sourceFollowers || !targetFollowers) return null;\n" +
-                        "return {\"success\": true};",
-                        sourceCounters.getId(), targetCounters.getId()))
-                .execute()
-                .isJsonNull();
+        UserXtrCounters sourceCounters, targetCounters;
+        boolean isPrivate;
+
+        synchronized (vk) {
+
+            List<UserXtrCounters> users = vk.users()
+                    .get(owner)
+                    .fields(UserField.FOLLOWERS_COUNT)
+                    .userIds(sourceId, targetId)
+                    .execute();
+            targetCounters = users.get(1);
+            sourceCounters = users.get(0);
+
+            check();
+            isPrivate = vk.execute()
+                    .code(owner, String.format(
+                            "var sourceFollowers = API.friends.get({\"user_id\": %d, \"count\": 1});\n" +
+                            "var targetFollowers = API.friends.get({\"user_id\": %d, \"count\": 1});\n" +
+                            "if (!sourceFollowers || !targetFollowers) return null;\n" +
+                            "return {\"success\": true};",
+                            sourceCounters.getId(), targetCounters.getId()))
+                    .execute()
+                    .isJsonNull();
+
+        }
+
         if (isPrivate) throw new ClientException("One or both of accounts is private or friends list is hidden");
 
         User source = new User(sourceCounters.getFirstName(), sourceCounters.getLastName(), sourceCounters.getId()),
@@ -225,11 +242,16 @@ public class App {
 
     public ResultResponse<List<Document>> result(String userId) throws IllegalArgumentException, ClientException, ApiException {
         check();
-        UserXtrCounters user = vk.users()
-                .get(owner)
-                .userIds(userId)
-                .execute()
-                .get(0);
+        UserXtrCounters user;
+
+        synchronized (vk) {
+            user = vk.users()
+                    .get(owner)
+                    .userIds(userId)
+                    .execute()
+                    .get(0);
+        }
+
         List<Document> result = db.result(user.getId());
         if (result.isEmpty()) throw new IllegalArgumentException("Cannot find requested user");
         return new ResultResponse<>(result);

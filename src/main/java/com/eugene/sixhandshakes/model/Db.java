@@ -67,11 +67,14 @@ public class Db {
                             "target", Document.parse(mapper.writeValueAsString(target))
                     )
             );
+
+            return true;
+
         } catch (JsonProcessingException e) {
             System.out.println("Unable to insert");
         }
 
-        return true;
+        return false;
     }
 
     public HashMap<String, User> nextUsers(){
