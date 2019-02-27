@@ -20,7 +20,7 @@ public class Db {
     private MongoCollection<Document> users, results, averageCountCollection;
     private ObjectMapper mapper;
 
-    public Db(MongoCollection<Document> users, MongoCollection<Document> results,
+    Db(MongoCollection<Document> users, MongoCollection<Document> results,
               MongoCollection<Document> averageCountCollection) {
         this.users = users;
         this.results = results;
@@ -28,7 +28,7 @@ public class Db {
         mapper = new ObjectMapper();
     }
 
-    public boolean insertUsers(User source, User target){
+    boolean insertUsers(User source, User target){
         try {
             Document doc = users.find(
                     or(
@@ -77,7 +77,7 @@ public class Db {
         return false;
     }
 
-    public HashMap<String, User> nextUsers(){
+    HashMap<String, User> nextUsers(){
         Document doc = users.find().first();
         HashMap<String, User> pair = new HashMap<>();
         if (doc!=null){
@@ -91,7 +91,7 @@ public class Db {
         return pair;
     }
 
-    public void writeResult(User source, User target, int count){
+    void writeResult(User source, User target, int count){
         try {
             results.insertOne(
                     new Document(
@@ -122,7 +122,7 @@ public class Db {
         }
     }
 
-    public List<Document> result(int userId){
+    List<Document> result(int userId){
         List<Document> result = results.find(
                 or(
                         eq("source.id", userId),
@@ -138,15 +138,15 @@ public class Db {
         return new ArrayList<>();
     }
 
-    public long usersCount(){
+    long usersCount(){
         return users.countDocuments();
     }
 
-    public long resultsCount(){
+    long resultsCount(){
         return results.countDocuments();
     }
 
-    public double averageCount(){
+    double averageCount(){
         return averageCountCollection.find()
                 .first()
                 .getDouble("averageCount");
